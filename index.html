@@ -1,0 +1,97 @@
+<head>
+    <title>Bloc de Notas</title>
+    <link rel="stylesheet" href="Style.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"></link>
+</head>
+<body>
+    <script>
+        function Guardar(textarea){
+            var parametros = {"textarea1" : textarea};
+            $.ajax({
+                type: 'POST',
+                url: 'Guardar.php',
+                data: parametros,
+                beforeSend: function() {
+                    $("#resultado").html("Procesando, espere por favor...");
+                },
+                fail: function() {
+                    $("#resultado").html("Error al insertar");
+                },
+                success: function(response){
+                    $("#resultado").html(response);
+                }
+            });
+        }
+        function MostrarArchivo(){
+            document.getElementById("overlay").classList.add("active");
+            document.getElementById("popup").classList.add("active");
+            $.ajax({
+                type: 'POST',
+                url: 'MostrarArchivo.php',
+                beforeSend: function() {
+                    $("#resultado").html("Procesando, espere por favor...");
+                },
+                fail: function() {
+                    $("#resultado").html("Error al insertar");
+                },
+                success: function(response){
+                    $("#resultado").html(response);
+                }
+            });
+        }
+        function NuevaCarpeta(carpeta, ruta){
+            var parametros = {"carpeta" : carpeta, "ruta" : ruta};
+            $.ajax({
+                type: 'POST',
+                url: 'NuevaCarpeta.php',
+                data: parametros,
+                beforeSend: function() {
+                    $("#resultado").html("Procesando, espere por favor...");
+                },
+                fail: function() {
+                    $("#resultado").html("Error al insertar");
+                },
+                success: function(response){
+                    $("#resultado").html(response);
+                }
+            });
+        }
+        function CrearCarpeta(){
+            document.getElementById("overlay1").classList.add("active");
+            document.getElementById("popup1").classList.add("active");
+        }
+        function CerrarMostrar(){
+            document.getElementById("overlay").classList.remove("active");
+            document.getElementById("popup").classList.remove("active");
+            document.getElementById("overlay1").classList.remove("active");
+            document.getElementById("popup1").classList.remove("active");
+        }
+    </script>
+    <div class="nav" id="nav"> 
+        <button onclick="MostrarArchivo()" type="submit" class="navButtoms" name="action">Mostrar Archivos</button>
+        <button onclick="CrearCarpeta()" type="submit" class="navButtoms" name="action">Crear Carpeta</button>
+        <button onclick="Guardar($('#textarea1').val())" type="submit" class="navButtoms" name="action">Guardar</button>
+        <div id="nombre"></div>
+    </div>
+    <div>
+        <textarea class="textarea" name="textarea1" id="textarea1" cols="30" rows="10"></textarea>
+        <div class="overlay" id="overlay">
+            <div class="popup" id="popup"> 
+                <div id="resultado"></div>
+                <a href="#nav" id="btnClosePopup" onclick="CerrarMostrar()" class="btn-close-popup"><i class="far fa-times-circle"></i></a>
+            </div>
+        </div>
+        <div class="overlay" id="overlay1">
+            <div class="popup" id="popup1"> 
+                <h2>Nommbre de la Carpeta</h2>
+                <input type="text" name="carpeta" id="carpeta">
+                <h2>Ruta de la Carpeta</h2>
+                <input type="text" name="ruta" id="ruta">
+                <button onclick="NuevaCarpeta()" type="submit" name="action">Guardar Carpeta</button>
+                <a href="#nav" id="btnClosePopup" onclick="CerrarMostrar()" class="btn-close-popup"><i class="far fa-times-circle"></i></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
